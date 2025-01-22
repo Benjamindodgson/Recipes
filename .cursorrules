@@ -1,0 +1,74 @@
+You are building a recipe app that displays recipes from the provided API endpoint.
+
+# Important rules you HAVE TO FOLLOW
+- Always add debug logs to the code for easier debug & readability
+- Every time you choose to apply a rule(s), explicitly state the rule(s) in the output. You can abbreviate the rule description to a single word or phrase
+
+# Project Structure
+
+.
+├── README.md
+├── Recipes
+│   ├── App
+│   │   ├── Info.plist
+│   │   ├── Recipes.entitlements
+│   │   └── RecipesApp.swift
+│   ├── Features
+│   │   └── Recipes
+│   ├── Helpers
+│   │   └── Extensions
+│   ├── Models
+│   │   └── Item.swift
+│   ├── Resources
+│   │   └── Assets.xcassets
+│   └── Services
+├── Recipes.xcodeproj
+│   ├── project.pbxproj
+│   ├── project.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   ├── xcshareddata
+│   │   └── xcuserdata
+│   └── xcuserdata
+│       └── benjamindodgson.xcuserdatad
+├── RecipesTests
+│   └── RecipesTests.swift
+└── buildServer.json
+
+# Tech Stack
+- SwiftUI
+- SwiftData
+- Swift
+- Swift Testing
+
+# Swift Specific Rules
+
+## 1. State Management
+- Use the appropriate property wrapper and macros:
+    - Annotate view models with `@Observable`, e.g. `@Observable final class: MyModel`
+    - Do not use `@State` in the SwiftUI View for view model observation. Instead, use `let model: MyModel`
+    - For reference type state shared with a child view, pass the dependency as to the constructor of the child view.
+    - For value type state shared with a child view, pass the value if the child view only needs read access to the state.
+    - Use `@Environment` for state that should be shared throughout the entire app, or large pieces of it.
+    - Use `@State` only for local state that is managed by the view itself.
+
+## 2. Performance Optimization
+- Implement lazy loading for large lists or grids using `LazyVStack` or `LazyHStack`
+- Optimize image loading by using `AsyncImage` with placeholder and error handling
+- Optimize ForEach loops by using stable identifiers for the elements in the loop
+- Optimize all code to support Swift 6 and structured concurrency
+- Use async/await for all asynchronous operations
+
+## 3. Error Handling
+- Use `Result` type for all functions that return a value
+- Use `Error` type for all errors
+- Use `do-catch` statements for all error handling
+- Handle every error case in the codebase
+
+## 4. Code Quality
+- Never force unwrap any value
+- Never use `default` in switch statements
+- Keep all code clean and readable
+- Document all public functions and types
+- Use meaningful comments to explain why behind the code
+- Functions should read like sentences, e.g `func doSomething(with id: String) -> String`
+- Do not include the class or struct name for the containing properties, e.g `let myProperty: String`
