@@ -1,3 +1,10 @@
+//
+//  RecipeService.swift
+//  Recipes
+//
+//  Created by Benjamin Dodgson on 1/26/25.
+//
+
 import Foundation
 
 /// Service responsible for fetching recipes from the remote API

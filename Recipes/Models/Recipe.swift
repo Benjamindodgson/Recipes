@@ -1,3 +1,10 @@
+//
+//  Recipe.swift
+//  Recipes
+//
+//  Created by Benjamin Dodgson on 1/26/25.
+//
+
 /// A model representing a recipe with its associated metadata
 struct Recipe: Identifiable, Codable {
     // MARK: - Properties
