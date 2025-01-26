@@ -57,6 +57,7 @@ You are building a recipe app that displays recipes from the provided API endpoi
 - Optimize ForEach loops by using stable identifiers for the elements in the loop
 - Optimize all code to support Swift 6 and structured concurrency
 - Use async/await for all asynchronous operations
+- Use actors for all Services
 
 ## 3. Error Handling
 - Use `Result` type for all functions that return a value
