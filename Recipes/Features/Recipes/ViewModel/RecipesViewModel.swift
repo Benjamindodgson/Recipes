@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-@Observable final class RecipesViewModel {
-    private let recipeService: RecipeService
+@Observable final class RecipesViewModel: Loggable {
+    private let service: RecipeServiceProtocol
     
     enum LoadingState {
         case idle
@@ -21,28 +21,28 @@ import SwiftUI
     
     var state: LoadingState = .idle
     
-    init(recipeService: RecipeService = RecipeService()) {
-        self.recipeService = recipeService
-        print("📱 RecipeViewModel initialized")
+    init(service: RecipeServiceProtocol = RecipeService()) {
+        self.service = service
+        logger.info("RecipeViewModel initialized")
     }
     
     @MainActor
     func loadRecipes() async {
-        print("📱 Loading recipes...")
+        logger.debug("Loading recipes...")
         state = .loading
         
         do {
-            let recipes = try await recipeService.fetchRecipes()
+            let recipes = try await service.fetchRecipes()
             
             if recipes.isEmpty {
-                print("📱 No recipes found")
+                logger.warning("No recipes found")
                 state = .empty
             } else {
-                print("📱 Loaded \(recipes.count) recipes")
+                logger.info("Loaded \(recipes.count) recipes")
                 state = .loaded(recipes)
             }
         } catch {
-            print("❌ Error loading recipes: \(error)")
+            logger.error("Error loading recipes: \(error)")
             state = .error(error)
         }
     }

@@ -17,3 +17,26 @@ extension Loggable {
         return Logger(subsystem: "com.recipes.app", category: category)
     }
 }
+
+extension Logger {
+    func info(_ message: String) {
+        self.log(level: .info, "✅ \(message)")
+    }
+    
+    func debug(_ message: String) {
+        self.log(level: .debug, "🔍 \(message)")
+    }
+    
+    func warning(_ message: String) {
+        self.log(level: .default, "⚠️ \(message)")
+    }
+    
+    func error(_ message: String) {
+        self.log(level: .error, "❌ \(message)")
+    }
+    
+    func fault(_ message: String) {
+        self.log(level: .fault, "💥 \(message)")
+    }
+}
+

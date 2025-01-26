@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipesView: View {
-    let viewModel: RecipeViewModel
+    let viewModel: RecipesViewModel
     
     var body: some View {
         NavigationStack {
@@ -41,11 +41,11 @@ struct RecipesView: View {
     }
     
     private func recipeList(recipes: [Recipe]) -> some View {
-        RecipeCardsScrollView(recipes: recipes)
+        RecipesScrollView(recipes: recipes)
     }
 }
 
-private struct RecipeCardsScrollView: View {
+private struct RecipesScrollView: View {
     let recipes: [Recipe]
     
     var body: some View {
@@ -69,5 +69,5 @@ private struct RecipeCardsScrollView: View {
 }
 
 #Preview {
-    RecipesView(viewModel: RecipeViewModel())
+    RecipesView(viewModel: RecipesViewModel())
 } 
