@@ -37,7 +37,7 @@ struct RecipeListView: View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(recipes) { recipe in
-                    RecipeRowView(recipe: recipe)
+                    RecipeCardView(recipe: recipe)
                         .padding(.horizontal)
                 }
             }
