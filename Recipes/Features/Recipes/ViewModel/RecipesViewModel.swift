@@ -1,5 +1,5 @@
 //
-//  RecipeViewModel.swift
+//  RecipesViewModel.swift
 //  Recipes
 //
 //  Created by Benjamin Dodgson on 1/26/25.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-@Observable final class RecipeViewModel {
+@Observable final class RecipesViewModel {
     private let recipeService: RecipeService
     
     enum LoadingState {

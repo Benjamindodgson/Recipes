@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RecipeListView: View {
+struct RecipesView: View {
     let viewModel: RecipeViewModel
     
     var body: some View {
@@ -41,6 +41,14 @@ struct RecipeListView: View {
     }
     
     private func recipeList(recipes: [Recipe]) -> some View {
+        RecipeCardsScrollView(recipes: recipes)
+    }
+}
+
+private struct RecipeCardsScrollView: View {
+    let recipes: [Recipe]
+    
+    var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 20) {
                 ForEach(recipes) { recipe in
@@ -61,5 +69,5 @@ struct RecipeListView: View {
 }
 
 #Preview {
-    RecipeListView(viewModel: RecipeViewModel())
+    RecipesView(viewModel: RecipeViewModel())
 } 
