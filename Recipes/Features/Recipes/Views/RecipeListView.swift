@@ -41,13 +41,20 @@ struct RecipeListView: View {
     }
     
     private func recipeList(recipes: [Recipe]) -> some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 20) {
                 ForEach(recipes) { recipe in
                     RecipeCardView(recipe: recipe)
-                        .padding(.horizontal)
+                        .frame(width: 300) // Fixed width for cards
+                        .scrollTransition { content, phase in
+                            content
+                                .opacity(phase.isIdentity ? 1 : 0)
+                                .scaleEffect(phase.isIdentity ? 1 : 0.8)
+                                .blur(radius: phase.isIdentity ? 0 : 2)
+                        }
                 }
             }
+            .padding(.horizontal)
             .padding(.vertical)
         }
     }
