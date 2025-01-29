@@ -8,39 +8,45 @@
 import SwiftUI
 
 /// A SwiftUI view that asynchronously loads and caches images from a remote URL.
+/// 
+/// Example usage:
+/// ```swift
+/// ImageView(displayable: recipe) { phase in
+///     switch phase {
+///     case .empty:
+///         ProgressView()
+///     case .success(let image):
+///         image.resizable()
+///     case .failure(let error):
+///         ErrorView(error: error)
+///     @unknown default:
+///         EmptyView()
+///     }
+/// }
+/// ``
 struct ImageView<Content>: View, Loggable where Content: View {
     
-    private let url: URL?
-    private let scale: CGFloat
-    private let transaction: Transaction
+    private let displayable: ImageDisplayable
     private let content: (AsyncImagePhase) -> Content
     
     enum AsyncImageError: Error {
         case invalidURL
     }
     
-    init(urlString: String?,
-         scale: CGFloat = 1.0,
-         transaction: Transaction = Transaction(),
+    init(displayable: ImageDisplayable,
          @ViewBuilder content: @escaping (AsyncImagePhase) -> Content) {
         
-        if let urlString, let url = URL(string: urlString) {
-            self.url = url
-        } else {
-            self.url = nil
-        }
-        self.scale = scale
-        self.transaction = transaction
+        self.displayable = displayable
         self.content = content
     }
     
     var body: some View {
         Group {
-            if let url {
+            if let url = displayable.url {
                 if let image = ImageCacheService[url] {
                     renderCached(image: image, url: url)
                 } else {
-                    AsyncImage(url: url, scale: scale, transaction: transaction) { phase in
+                    AsyncImage(displayable: displayable) { phase in
                         renderImage(for: phase, url: url)
                     }
                 }
@@ -57,9 +63,17 @@ struct ImageView<Content>: View, Loggable where Content: View {
     }
     
     private func renderImage(for phase: AsyncImagePhase, url: URL) -> some View {
-        if case .success(let image) = phase {
-            logger.info("Image cached successfully for URL: \(url.absoluteString)")
+        switch phase {
+        case .empty:
+            logger.debug("Starting image load for URL: \(url.absoluteString)")
+        case .success(let image):
+            logger.info("Image loaded successfully for URL: \(url.absoluteString)")
+            logger.debug("Caching image in memory")
             ImageCacheService[url] = image
+        case .failure(let error):
+            logger.error("Image load failed for URL: \(url.absoluteString), error: \(error.localizedDescription)")
+        @unknown default:
+            logger.warning("Unknown AsyncImagePhase encountered")
         }
         
         return content(phase)

@@ -47,13 +47,12 @@ struct RecipesView: View {
 
 private struct RecipesScrollView: View {
     let recipes: [Recipe]
-    private let horizontalPadding: CGFloat = 30 // Define padding as a property
-    
-    @State private var selectedIndex: Int? = nil    
-    
+
+    @State private var selectedIndex: Int? = nil
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack(spacing: 0) {
+            LazyVStack(spacing: 30) {
                 ForEach(Array(recipes.enumerated()), id: \.element.id) { index, recipe in
                     GeometryReader { geometry in
                         RecipeCardView(recipe: recipe)
@@ -68,12 +67,12 @@ private struct RecipesScrollView: View {
                     .frame(height: UIScreen.main.bounds.height * 0.4) // Ensure each card takes 40% of the screen height
                 }
             }
-            .padding(.horizontal, horizontalPadding) // Use property for padding
-            .padding(.vertical, 100)
+            .padding()
             .scrollTargetLayout()
         }
         .scrollTargetBehavior(.viewAligned)
         .scrollPosition(id: $selectedIndex)
+        .safeAreaPadding(.vertical, 100)
     }
 }
 

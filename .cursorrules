@@ -69,7 +69,7 @@ You are building a recipe app that displays recipes from the provided API endpoi
 - Never force unwrap any value
 - Never use `default` in switch statements
 - Keep all code clean and readable
-- Document all public functions and types
+- Document all public functions and types. Give an example of how to use the class or struct at the top of the file
 - Use meaningful comments to explain why behind the code
 - Functions should read like sentences, e.g `func doSomething(with id: String) -> String`
 - Do not include the class or struct name for the containing properties, e.g `let myProperty: String`

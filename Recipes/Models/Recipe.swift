@@ -6,7 +6,8 @@
 //
 
 /// A model representing a recipe with its associated metadata
-struct Recipe: Modelable {
+struct Recipe: Modelable, ImageDisplayable {    
+    
     // MARK: - Properties
     
     /// The type of cuisine this recipe belongs to
@@ -47,16 +48,14 @@ struct Recipe: Modelable {
 }
 
 extension Recipe {
+    var urlString: String {
+        return photoURLLarge ?? ""
+    }
+}
+
+extension Recipe {
     static func mock() -> Recipe {
-        .init(
-            cuisine: "American",
-            name: "Chicken Fajitas",
-            photoURLLarge: nil,
-            photoURLSmall: nil,
-            uuid: "mock-uuid",
-            sourceURL: nil,
-            youtubeURL: nil
-        )
+        MockRecipes.recipes.first!
     }
 }
 

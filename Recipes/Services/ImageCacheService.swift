@@ -8,8 +8,12 @@
 import SwiftUI
 import OSLog
 
+protocol ImageCacheServiceProtocol: Serviceable {
+    static subscript (key: URL) -> Image? { get set }
+}
+
 /// A service that handles loading and caching of images in a thread-safe manner
-actor ImageCacheService: Serviceable {
+actor ImageCacheService: ImageCacheServiceProtocol {
     
     static private var cache: [URL: Image] = [:]
     

@@ -13,7 +13,7 @@ struct RecipeImageView: View {
     let recipe: Recipe
     
     var body: some View {
-        ImageView(urlString: recipe.photoURLLarge) { phase in
+        ImageView(displayable: recipe) { phase in
             switch phase {
             case .empty:
                 placeholderView
@@ -26,7 +26,7 @@ struct RecipeImageView: View {
             @unknown default:
                 errorView
             }
-        }        
+        }
     }
     
     /// A placeholder view shown while the image is loading.

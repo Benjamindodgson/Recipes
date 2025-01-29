@@ -51,6 +51,6 @@ final class RecipesViewModel: ViewModelable {
 
 extension RecipesViewModel {
     static func mock() -> Self {
-        .init(service: RecipeService.mock())
+        .init(service: MockRecipeService())
     }
 }
