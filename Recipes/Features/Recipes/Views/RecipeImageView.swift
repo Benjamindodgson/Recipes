@@ -20,16 +20,13 @@ struct RecipeImageView: View {
             case .success(let image):
                 image
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
             case .failure:
                 errorView
             @unknown default:
                 errorView
             }
-        }
-        //.frame(width: 200, height: 200) // Adjust frame as needed
-        .clipShape(RoundedRectangle(cornerRadius: 10)) // Optional styling
-        .shadow(radius: 5) // Optional styling
+        }        
     }
     
     /// A placeholder view shown while the image is loading.

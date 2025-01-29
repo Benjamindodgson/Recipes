@@ -47,24 +47,33 @@ struct RecipesView: View {
 
 private struct RecipesScrollView: View {
     let recipes: [Recipe]
+    private let horizontalPadding: CGFloat = 30 // Define padding as a property
+    
+    @State private var selectedIndex: Int? = nil    
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 20) {
-                ForEach(recipes) { recipe in
-                    RecipeCardView(recipe: recipe)
-                        .frame(width: 300) // Fixed width for cards
-                        .scrollTransition { content, phase in
-                            content
-                                .opacity(phase.isIdentity ? 1 : 0)
-                                .scaleEffect(phase.isIdentity ? 1 : 0.8)
-                                .blur(radius: phase.isIdentity ? 0 : 2)
-                        }
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVStack(spacing: 0) {
+                ForEach(Array(recipes.enumerated()), id: \.element.id) { index, recipe in
+                    GeometryReader { geometry in
+                        RecipeCardView(recipe: recipe)
+                            .frame(height: geometry.size.height * 0.4) // 40% of the scroll view's height
+                            .scrollTransition { content, phase in
+                                content
+                                    .opacity(phase.isIdentity ? 1 : 0.9)
+                                    .scaleEffect(phase.isIdentity ? 1 : 0.95)
+                                    .blur(radius: phase.isIdentity ? 0 : 1)
+                            }
+                    }
+                    .frame(height: UIScreen.main.bounds.height * 0.4) // Ensure each card takes 40% of the screen height
                 }
             }
-            .padding(.horizontal)
-            .padding(.vertical)
+            .padding(.horizontal, horizontalPadding) // Use property for padding
+            .padding(.vertical, 100)
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $selectedIndex)
     }
 }
 

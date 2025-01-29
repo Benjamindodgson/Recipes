@@ -19,23 +19,23 @@ extension Loggable {
 }
 
 extension Logger {
-    func info(_ message: String) {
+    func info(_ message: String, privacy: OSLogPrivacy = .public) {
         self.log(level: .info, "✅ \(message)")
     }
     
-    func debug(_ message: String) {
+    func debug(_ message: String, privacy: OSLogPrivacy = .public) {
         self.log(level: .debug, "🔍 \(message)")
     }
     
-    func warning(_ message: String) {
+    func warning(_ message: String, privacy: OSLogPrivacy = .public) {
         self.log(level: .default, "⚠️ \(message)")
     }
     
-    func error(_ message: String) {
+    func error(_ message: String, privacy: OSLogPrivacy = .public) {
         self.log(level: .error, "❌ \(message)")
     }
     
-    func fault(_ message: String) {
+    func fault(_ message: String, privacy: OSLogPrivacy = .public) {
         self.log(level: .fault, "💥 \(message)")
     }
 }

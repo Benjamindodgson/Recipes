@@ -45,12 +45,16 @@ actor RecipeService: RecipeServiceProtocol {
         }
         
         do {
-            let recipes = try JSONDecoder().decode([Recipe].self, from: data)
-            logger.info("Successfully fetched \(recipes.count) recipes")
-            return recipes
+            let response = try JSONDecoder().decode(RecipeResponse.self, from: data)
+            logger.info("Successfully fetched \(response.recipes.count) recipes")
+            return response.recipes
         } catch {
             logger.error("Failed to decode recipes: \(error.localizedDescription, privacy: .public)")
             throw NetworkError.decodingError(error)
         }
     }
+}
+
+private struct RecipeResponse: Decodable {
+    let recipes: [Recipe]
 }

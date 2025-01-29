@@ -19,11 +19,10 @@ struct RecipeCardView: View {
     
     var body: some View {
         // Main card container
-        VStack(spacing: 0) {
-            // Recipe image at the top
+        ZStack {
+            // Recipe image fills the entire card
             RecipeImageView(recipe: recipe)
-                .frame(height: 200)
-            
+                .frame(maxWidth: .infinity, maxHeight: .infinity)            
             // Text overlay with gradient background
             textOverlay
         }
@@ -35,30 +34,33 @@ struct RecipeCardView: View {
     // MARK: - Private Views
     
     private var textOverlay: some View {
-        ZStack(alignment: .bottom) {
+        VStack(spacing: 0) {
             // Gradient background for text
             LinearGradient(
                 colors: [
-                    .black.opacity(0.5),
-                    .black.opacity(0.2)
+                    .black.opacity(0.7),
+                    .black.opacity(0.3),
+                    .clear
                 ],
                 startPoint: .bottom,
                 endPoint: .top
             )
             .frame(height: Layout.gradientHeight)
-            
-            // Recipe information
-            VStack(alignment: .leading, spacing: 4) {
-                Text(recipe.name)
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                
-                Text(recipe.cuisine)
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.8))
+            .overlay {
+                // Recipe information
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(recipe.name)
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                    
+                    Text(recipe.cuisine)
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.8))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(Layout.padding)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(Layout.padding)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
     }
 }

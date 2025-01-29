@@ -52,13 +52,13 @@ struct CachedAsyncImageView<Content>: View, Loggable where Content: View {
     
     private func renderCached(image: Image, url: URL) -> some View {
         // Log or handle cached image logic
-        logger.info("Cache hit for URL: \(url.absoluteString, privacy: .public)")
+        logger.info("Cache hit for URL: \(url.absoluteString)")
         return content(.success(image))
     }
     
     private func renderImage(for phase: AsyncImagePhase, url: URL) -> some View {
         if case .success(let image) = phase {
-            logger.info("Image cached successfully for URL: \(url.absoluteString, privacy: .public)")
+            logger.info("Image cached successfully for URL: \(url.absoluteString)")
             ImageCacheService[url] = image
         }
         
