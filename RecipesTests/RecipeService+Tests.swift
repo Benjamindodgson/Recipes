@@ -15,9 +15,7 @@ struct RecipeServiceTests {
     // MARK: - Test Setup
     
     func makeService() -> RecipeService {
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockURLProtocol.self]
-        let session = URLSession(configuration: configuration)
+        let session = URLSession.mock()
         return RecipeService(session: session)
     }
     

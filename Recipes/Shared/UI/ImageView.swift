@@ -1,5 +1,5 @@
 //
-//  CachedAsyncImageView.swift
+//  ImageView.swift
 //  Recipes
 //
 //  Created by Benjamin Dodgson on 1/26/25.
@@ -7,8 +7,19 @@
 
 import SwiftUI
 
+@Observable
+final class ImageViewModel: ViewModelable {
+    
+}
+
+extension ImageViewModel {
+    static func mock() -> Self {
+        .init()
+    }
+}
+
 /// A SwiftUI view that asynchronously loads and caches images from a remote URL.
-struct CachedAsyncImageView<Content>: View, Loggable where Content: View {
+struct ImageView<Content>: View, Loggable where Content: View {
     
     private let url: URL?
     private let scale: CGFloat

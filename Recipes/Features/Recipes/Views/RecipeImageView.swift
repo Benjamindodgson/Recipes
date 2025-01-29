@@ -13,7 +13,7 @@ struct RecipeImageView: View {
     let recipe: Recipe
     
     var body: some View {
-        CachedAsyncImageView(urlString: recipe.photoURLLarge) { phase in
+        ImageView(urlString: recipe.photoURLLarge) { phase in
             switch phase {
             case .empty:
                 placeholderView
