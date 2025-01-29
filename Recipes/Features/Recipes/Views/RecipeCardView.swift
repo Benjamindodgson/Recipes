@@ -64,3 +64,9 @@ struct RecipeCardView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
     }
 }
+
+// MARK: - Preview Provider
+#Preview {
+    RecipeCardView(recipe: Recipe.mock())
+        .frame(width: 300, height: 200)
+}

@@ -7,17 +7,6 @@
 
 import SwiftUI
 
-@Observable
-final class ImageViewModel: ViewModelable {
-    
-}
-
-extension ImageViewModel {
-    static func mock() -> Self {
-        .init()
-    }
-}
-
 /// A SwiftUI view that asynchronously loads and caches images from a remote URL.
 struct ImageView<Content>: View, Loggable where Content: View {
     

@@ -67,13 +67,13 @@ struct RecipeServiceTests {
         // When/Then
         do {
             _ = try await service.fetchRecipes()
-            #expect(false, "Expected error to be thrown")
+            #expect(Bool(false), "Expected error to be thrown")
         } catch {
             #expect(error is NetworkError)
             if case NetworkError.invalidURL = error {
                 // Success
             } else {
-                #expect(false, "Wrong error type: \(error)")
+                #expect(Bool(false), "Wrong error type: \(error)")
             }
         }
     }
@@ -91,13 +91,13 @@ struct RecipeServiceTests {
         // When/Then
         do {
             _ = try await service.fetchRecipes()
-            #expect(false, "Expected error to be thrown")
+            #expect(Bool(false), "Expected error to be thrown")
         } catch {
             #expect(error is NetworkError)
             if case NetworkError.badStatus(let code) = error {
                 #expect(code == 404)
             } else {
-                #expect(false, "Wrong error type: \(error)")
+                #expect(Bool(false), "Wrong error type: \(error)")
             }
         }
     }
@@ -117,13 +117,13 @@ struct RecipeServiceTests {
         // When/Then
         do {
             _ = try await service.fetchRecipes()
-            #expect(false, "Expected error to be thrown")
+            #expect(Bool(false), "Expected error to be thrown")
         } catch {
             #expect(error is NetworkError)
             if case NetworkError.decodingError = error {
                 // Success
             } else {
-                #expect(false, "Wrong error type: \(error)")
+                #expect(Bool(false), "Wrong error type: \(error)")
             }
         }
     }

@@ -18,14 +18,13 @@ actor RecipeService: RecipeServiceProtocol {
     
     init(session: URLSession = .shared) {
         self.session = session
-        logger.info("RecipeService initialized")
     }
     
     /// Fetches recipes from the remote API
     /// - Returns: Array of Recipe objects
     /// - Throws: NetworkError if the request fails
     func fetchRecipes() async throws -> [Recipe] {
-        logger.info("Fetching recipes...")
+        logger.debug("Fetching recipes...")
         
         guard let url = URL(string: "\(baseURL)/recipes.json") else {
             logger.error("Invalid URL")
@@ -57,7 +56,7 @@ actor RecipeService: RecipeServiceProtocol {
 
 extension RecipeService {
     static func mock() -> Self {
-        .init(session: .init(configuration: .ephemeral))
+        .init(session: URLSession.mock())
     }
 }
 

@@ -33,4 +33,4 @@
 /// let anotherRecipe = Recipe(id: 2, title: "BLT")
 /// print(recipe == anotherRecipe) // Prints false
 /// ```
-protocol Modelable: Identifiable, Codable, Equatable, Loggable {}
+protocol Modelable: Identifiable, Codable, Equatable, Loggable, Mockable {}

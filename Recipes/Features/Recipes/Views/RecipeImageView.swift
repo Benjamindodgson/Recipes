@@ -49,3 +49,8 @@ struct RecipeImageView: View {
         }
     }
 }
+
+// MARK: - Preview Provider
+#Preview {
+    RecipeImageView(recipe: Recipe.mock())
+}

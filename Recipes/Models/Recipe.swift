@@ -44,8 +44,20 @@ struct Recipe: Modelable {
         case sourceURL = "source_url"
         case youtubeURL = "youtube_url"
     }
-    
-    
+}
+
+extension Recipe {
+    static func mock() -> Recipe {
+        .init(
+            cuisine: "American",
+            name: "Chicken Fajitas",
+            photoURLLarge: nil,
+            photoURLSmall: nil,
+            uuid: "mock-uuid",
+            sourceURL: nil,
+            youtubeURL: nil
+        )
+    }
 }
 
 // MARK: - Debug Support

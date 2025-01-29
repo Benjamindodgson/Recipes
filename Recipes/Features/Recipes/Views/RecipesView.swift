@@ -78,5 +78,5 @@ private struct RecipesScrollView: View {
 }
 
 #Preview {
-    RecipesView(viewModel: RecipesViewModel())
+    RecipesView(viewModel: RecipesViewModel.mock())
 } 

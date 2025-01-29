@@ -24,7 +24,6 @@ final class RecipesViewModel: ViewModelable {
     
     init(service: RecipeServiceProtocol = RecipeService()) {
         self.service = service
-        logger.info("RecipeViewModel initialized")
     }
     
     /// Description
