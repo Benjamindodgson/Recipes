@@ -8,7 +8,8 @@
 import Foundation
 import SwiftUI
 
-@Observable final class RecipesViewModel: Loggable {
+@Observable
+final class RecipesViewModel: ViewModelable {
     private let service: RecipeServiceProtocol
     
     enum LoadingState {
@@ -26,6 +27,7 @@ import SwiftUI
         logger.info("RecipeViewModel initialized")
     }
     
+    /// Description
     @MainActor
     func loadRecipes() async {
         logger.debug("Loading recipes...")
@@ -46,4 +48,10 @@ import SwiftUI
             state = .error(error)
         }
     }
-} 
+}
+
+extension RecipesViewModel {
+    static func mock() -> Self {
+        .init(service: RecipeService.mock())
+    }
+}

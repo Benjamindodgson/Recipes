@@ -6,7 +6,7 @@
 //
 
 /// A model representing a recipe with its associated metadata
-struct Recipe: Identifiable, Codable {
+struct Recipe: Modelable {
     // MARK: - Properties
     
     /// The type of cuisine this recipe belongs to
@@ -44,6 +44,8 @@ struct Recipe: Identifiable, Codable {
         case sourceURL = "source_url"
         case youtubeURL = "youtube_url"
     }
+    
+    
 }
 
 // MARK: - Debug Support

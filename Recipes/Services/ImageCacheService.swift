@@ -24,4 +24,11 @@ actor ImageCacheService: Serviceable {
             }
         }
     }
-} 
+}
+
+extension ImageCacheService {
+    
+    static func mock() -> Self {
+        .init()
+    }
+}

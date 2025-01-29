@@ -55,6 +55,14 @@ actor RecipeService: RecipeServiceProtocol {
     }
 }
 
+extension RecipeService {
+    static func mock() -> Self {
+        .init(session: .init(configuration: .ephemeral))
+    }
+}
+
 private struct RecipeResponse: Decodable {
     let recipes: [Recipe]
 }
+
+
