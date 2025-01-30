@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 extension AsyncImage where Content: View {
     /// Creates an AsyncImage instance from an ImageDisplayable object

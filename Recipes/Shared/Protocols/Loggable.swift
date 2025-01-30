@@ -7,6 +7,17 @@
 
 import os
 
+/// A protocol that provides logging capabilities to conforming types.
+/// 
+/// Example usage:
+/// ```swift
+/// class RecipeService: Loggable {
+///     func fetchRecipes() async throws -> [Recipe] {
+///         logger.info("Fetching recipes...")
+///         // ... implementation
+///     }
+/// }
+/// ```
 protocol Loggable {
     var logger: Logger { get }
 }
@@ -19,23 +30,38 @@ extension Loggable {
 }
 
 extension Logger {
-    func info(_ message: String, privacy: OSLogPrivacy = .public) {
+    /// Logs an informational message with a checkmark emoji
+    /// - Parameters:
+    ///   - message: The message to log
+    func info(_ message: String) {
         self.log(level: .info, "✅ \(message)")
     }
     
-    func debug(_ message: String, privacy: OSLogPrivacy = .public) {
+    /// Logs a debug message with a magnifying glass emoji
+    /// - Parameters:
+    ///   - message: The message to log
+    func debug(_ message: String) {
         self.log(level: .debug, "🔍 \(message)")
     }
     
-    func warning(_ message: String, privacy: OSLogPrivacy = .public) {
+    /// Logs a warning message with a warning emoji
+    /// - Parameters:
+    ///   - message: The message to log
+    func warning(_ message: String) {
         self.log(level: .default, "⚠️ \(message)")
     }
     
-    func error(_ message: String, privacy: OSLogPrivacy = .public) {
+    /// Logs an error message with a cross emoji
+    /// - Parameters:
+    ///   - message: The message to log
+    func error(_ message: String) {
         self.log(level: .error, "❌ \(message)")
     }
     
-    func fault(_ message: String, privacy: OSLogPrivacy = .public) {
+    /// Logs a fault message with an explosion emoji
+    /// - Parameters:
+    ///   - message: The message to log
+    func fault(_ message: String) {
         self.log(level: .fault, "💥 \(message)")
     }
 }

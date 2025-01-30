@@ -9,24 +9,25 @@ import SwiftUI
 import OSLog
 
 protocol ImageCacheServiceProtocol: Serviceable {
-    static subscript (key: URL) -> Image? { get set }
+    func reset()
+    func getValue(for key: URL) -> Image?
+    func setValue(_ value: Image?, for key: URL)
 }
 
 /// A service that handles loading and caching of images in a thread-safe manner
 actor ImageCacheService: ImageCacheServiceProtocol {
+    private var cache: [URL: Image] = [:]
     
-    static private var cache: [URL: Image] = [:]
+    func reset() {
+        cache.removeAll()
+    }
     
-    static subscript (key: URL) -> Image? {
-        get {
-            cache[key]
-        } set {
-            if let newValue = newValue {
-                cache[key] = newValue
-            } else {
-                cache.removeValue(forKey: key)
-            }
-        }
+    func getValue(for key: URL) -> Image? {
+        cache[key]
+    }
+    
+    func setValue(_ value: Image?, for key: URL) {
+        cache[key] = value
     }
 }
 

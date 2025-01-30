@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+/// A view that displays a recipe card with an image and text overlay
+/// 
+/// Example usage:
+/// ```swift
+/// RecipeCardView(recipe: myRecipe)
+///     .frame(width: 300, height: 200)
+/// ```
 struct RecipeCardView: View {
     let recipe: Recipe
     

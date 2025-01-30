@@ -26,40 +26,32 @@ import SwiftUI
 /// ``
 struct ImageView<Content>: View, Loggable where Content: View {
     
-    private let displayable: ImageDisplayable
+    private let viewModel: ImageViewModel
     private let content: (AsyncImagePhase) -> Content
-    
-    enum AsyncImageError: Error {
-        case invalidURL
-    }
     
     init(displayable: ImageDisplayable,
          @ViewBuilder content: @escaping (AsyncImagePhase) -> Content) {
-        
-        self.displayable = displayable
+        self.viewModel = ImageViewModel(displayable: displayable)
         self.content = content
     }
     
     var body: some View {
         Group {
-            if let url = displayable.url {
-                if let image = ImageCacheService[url] {
-                    renderCached(image: image, url: url)
-                } else {
-                    AsyncImage(displayable: displayable) { phase in
-                        renderImage(for: phase, url: url)
-                    }
+            switch viewModel.state {
+            case .idle:
+                content(.empty)
+            case .loading(let url):
+                AsyncImage(displayable: viewModel.displayable) { phase in
+                    renderImage(for: phase, url: url)
                 }
-            } else {
-                content(.failure(AsyncImageError.invalidURL))
+            case .loaded(let image):
+                content(.success(image))
+            case .error(let error):
+                content(.failure(error))
             }
+        }.task {
+            await viewModel.loadImage()
         }
-    }
-    
-    private func renderCached(image: Image, url: URL) -> some View {
-        // Log or handle cached image logic
-        logger.info("Cache hit for URL: \(url.absoluteString)")
-        return content(.success(image))
     }
     
     private func renderImage(for phase: AsyncImagePhase, url: URL) -> some View {
@@ -67,9 +59,11 @@ struct ImageView<Content>: View, Loggable where Content: View {
         case .empty:
             logger.debug("Starting image load for URL: \(url.absoluteString)")
         case .success(let image):
-            logger.info("Image loaded successfully for URL: \(url.absoluteString)")
-            logger.debug("Caching image in memory")
-            ImageCacheService[url] = image
+            Task {
+                logger.info("Image loaded successfully for URL: \(url.absoluteString)")
+                logger.debug("Caching image in memory")
+                await viewModel.cache(image: image, for: url)
+            }
         case .failure(let error):
             logger.error("Image load failed for URL: \(url.absoluteString), error: \(error.localizedDescription)")
         @unknown default:

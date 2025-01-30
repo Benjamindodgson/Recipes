@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum RecipesURL: String {
+    case recipes = "https://d3jbb8n5wk0qxi.cloudfront.net"
+    case malformedData = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-malformed.json"
+    case empty = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-empty.json"
+}
+
 protocol RecipeServiceProtocol: Serviceable {
     func fetchRecipes() async throws -> [Recipe]
 }
@@ -14,10 +20,11 @@ protocol RecipeServiceProtocol: Serviceable {
 /// Service responsible for fetching recipes from the remote API
 actor RecipeService: RecipeServiceProtocol {
     private let session: URLSession
-    private let baseURL = "https://d3jbb8n5wk0qxi.cloudfront.net"
+    private let url: RecipesURL
     
-    init(session: URLSession = .shared) {
+    init(session: URLSession = .shared, url: RecipesURL = .recipes) {
         self.session = session
+        self.url = url
     }
     
     /// Fetches recipes from the remote API
@@ -26,7 +33,7 @@ actor RecipeService: RecipeServiceProtocol {
     func fetchRecipes() async throws -> [Recipe] {
         logger.debug("Fetching recipes...")
         
-        guard let url = URL(string: "\(baseURL)/recipes.json") else {
+        guard let url = URL(string: "\(url.rawValue)/recipes.json") else {
             logger.error("Invalid URL")
             throw NetworkError.invalidURL
         }

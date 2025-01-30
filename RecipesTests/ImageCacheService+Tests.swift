@@ -13,56 +13,81 @@ struct ImageCacheServiceTests {
     
     @Test
     func testImageCaching() async throws {
-        // Given: A test image and URL
+        // Given: A test image, URL, and service instance
+        let service = ImageCacheService.mock()
         let testImage = Image(systemName: "star.fill")
         let testURL = URL(string: "https://example.com/test.jpg")!
         
-        // Clear cache initially
-        ImageCacheService[testURL] = nil
-        
         // When: Initially cache should be empty
-        #expect(ImageCacheService[testURL] == nil, "Cache should be empty at start")
+        let initialValue = await service.getValue(for: testURL)
+        #expect(initialValue == nil, "Cache should be empty at start")
         
         // And: Adding an image to cache
-        ImageCacheService[testURL] = testImage
+        await service.setValue(testImage, for: testURL)
         
         // Then: Image should be retrievable from cache
-        #expect(ImageCacheService[testURL] != nil, "Image should be stored in cache")
+        let cachedValue = await service.getValue(for: testURL)
+        #expect(cachedValue != nil, "Image should be stored in cache")
     }
     
     @Test
     func testImageRemoval() async throws {
-        // Given: A test image and URL
+        // Given: A test image, URL, and service instance
+        let service = ImageCacheService.mock()
         let testImage = Image(systemName: "star.fill")
         let testURL = URL(string: "https://example.com/test.jpg")!
         
         // And: An image in cache
-        ImageCacheService[testURL] = testImage
-        #expect(ImageCacheService[testURL] != nil, "Image should be stored in cache")
+        await service.setValue(testImage, for: testURL)
+        let initialValue = await service.getValue(for: testURL)
+        #expect(initialValue != nil, "Image should be stored in cache")
         
         // When: Removing image from cache
-        ImageCacheService[testURL] = nil
+        await service.setValue(nil, for: testURL)
         
         // Then: Cache should be empty
-        #expect(ImageCacheService[testURL] == nil, "Cache should be empty after removal")
+        let finalValue = await service.getValue(for: testURL)
+        #expect(finalValue == nil, "Cache should be empty after removal")
     }
     
     @Test
     func testImageOverwrite() async throws {
-        // Given: A test URL and images
+        // Given: A test URL, images, and service instance
+        let service = ImageCacheService.mock()
         let testURL = URL(string: "https://example.com/test.jpg")!
         let initialImage = Image(systemName: "circle.fill")
         let newImage = Image(systemName: "star.fill")
         
         // And: An initial image in cache
-        ImageCacheService[testURL] = initialImage
-        #expect(ImageCacheService[testURL] != nil, "Initial image should be stored in cache")
+        await service.setValue(initialImage, for: testURL)
+        let initialValue = await service.getValue(for: testURL)
+        #expect(initialValue != nil, "Initial image should be stored in cache")
         
         // When: Overwriting with new image
-        ImageCacheService[testURL] = newImage
+        await service.setValue(newImage, for: testURL)
         
         // Then: New image should be in cache
-        #expect(ImageCacheService[testURL] != nil, "New image should be stored in cache")
+        let finalValue = await service.getValue(for: testURL)
+        #expect(finalValue != nil, "New image should be stored in cache")
+    }
+    
+    @Test
+    func testCacheReset() async throws {
+        // Given: A service instance with some cached images
+        let service = ImageCacheService.mock()
+        let testImage = Image(systemName: "star.fill")
+        let testURL = URL(string: "https://example.com/test.jpg")!
+        
+        await service.setValue(testImage, for: testURL)
+        let initialValue = await service.getValue(for: testURL)
+        #expect(initialValue != nil, "Image should be stored in cache")
+        
+        // When: Resetting the cache
+        await service.reset()
+        
+        // Then: Cache should be empty
+        let finalValue = await service.getValue(for: testURL)
+        #expect(finalValue == nil, "Cache should be empty after reset")
     }
 }
 

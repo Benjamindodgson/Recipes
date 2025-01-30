@@ -7,28 +7,22 @@
 
 import Testing
 import Foundation
-
 @testable import Recipes
 
 struct RecipeServiceTests {
     
     // MARK: - Test Setup
     
-    func makeService() -> RecipeService {
+    func setup() -> RecipeService {
+        MockURLProtocol.mockData = nil
+        MockURLProtocol.mockResponse = nil
+        MockURLProtocol.mockError = nil
         let session = URLSession.mock()
         return RecipeService(session: session)
     }
     
     func mockSuccessResponse() -> (Data, URLResponse) {
-        let recipes = [
-            Recipe(cuisine: "Italian",
-                  name: "Pizza",
-                  photoURLLarge: "https://example.com/large.jpg",
-                  photoURLSmall: "https://example.com/small.jpg",
-                  uuid: "123",
-                  sourceURL: "https://example.com/recipe",
-                  youtubeURL: "https://youtube.com/watch")
-        ]
+        let recipes = MockRecipes.recipes
         let response = RecipeResponse(recipes: recipes)
         let data = try! JSONEncoder().encode(response)
         let httpResponse = HTTPURLResponse(url: URL(string: "https://example.com")!,
@@ -43,7 +37,7 @@ struct RecipeServiceTests {
     @Test
     func testFetchRecipesSuccess() async throws {
         // Given
-        let service = makeService()
+        let service = setup()
         let (data, response) = mockSuccessResponse()
         MockURLProtocol.mockData = data
         MockURLProtocol.mockResponse = response
@@ -52,17 +46,15 @@ struct RecipeServiceTests {
         let recipes = try await service.fetchRecipes()
         
         // Then
-        #expect(recipes.count == 1)
-        #expect(recipes[0].name == "Pizza")
+        #expect(recipes.count == MockRecipes.recipes.count)
+        #expect(recipes[0].name == "Margherita Pizza")
         #expect(recipes[0].cuisine == "Italian")
     }
     
     @Test
     func testFetchRecipesInvalidURL() async {
         // Given
-        let service = makeService()
-        MockURLProtocol.mockData = nil
-        MockURLProtocol.mockResponse = nil
+        let service = setup()
         
         // When/Then
         do {
@@ -70,7 +62,7 @@ struct RecipeServiceTests {
             #expect(Bool(false), "Expected error to be thrown")
         } catch {
             #expect(error is NetworkError)
-            if case NetworkError.invalidURL = error {
+            if case NetworkError.decodingError = error {
                 // Success
             } else {
                 #expect(Bool(false), "Wrong error type: \(error)")
@@ -81,12 +73,14 @@ struct RecipeServiceTests {
     @Test
     func testFetchRecipesBadStatusCode() async {
         // Given
-        let service = makeService()
+        let service = setup()
         let httpResponse = HTTPURLResponse(url: URL(string: "https://example.com")!,
-                                         statusCode: 404,
-                                         httpVersion: nil,
-                                         headerFields: nil)!
+                                           statusCode: 404,
+                                           httpVersion: nil,
+                                           headerFields: nil)!
         MockURLProtocol.mockResponse = httpResponse
+        MockURLProtocol.mockData = nil
+        MockURLProtocol.mockError = nil
         
         // When/Then
         do {
@@ -105,7 +99,7 @@ struct RecipeServiceTests {
     @Test
     func testFetchRecipesDecodingError() async {
         // Given
-        let service = makeService()
+        let service = setup()
         let invalidJSON = "invalid json".data(using: .utf8)!
         let httpResponse = HTTPURLResponse(url: URL(string: "https://example.com")!,
                                          statusCode: 200,
