@@ -36,6 +36,7 @@ struct ImageView<Content>: View, Loggable where Content: View {
     }
     
     var body: some View {
+        let model = viewModel
         Group {
             switch viewModel.state {
             case .idle:
@@ -50,7 +51,7 @@ struct ImageView<Content>: View, Loggable where Content: View {
                 content(.failure(error))
             }
         }.task {
-            await viewModel.loadImage()
+            await model.loadImage()
         }
     }
     
@@ -59,7 +60,7 @@ struct ImageView<Content>: View, Loggable where Content: View {
         case .empty:
             logger.debug("Starting image load for URL: \(url.absoluteString)")
         case .success(let image):
-            Task {
+            Task { [viewModel] in
                 logger.info("Image loaded successfully for URL: \(url.absoluteString)")
                 logger.debug("Caching image in memory")
                 await viewModel.cache(image: image, for: url)

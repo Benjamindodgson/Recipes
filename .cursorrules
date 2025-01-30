@@ -58,6 +58,7 @@ You are building a recipe app that displays recipes from the provided API endpoi
 - Optimize all code to support Swift 6 and structured concurrency
 - Use async/await for all asynchronous operations
 - Use actors for all Services
+- All code must support Swift 6 and strict concurrency
 
 ## 3. Error Handling
 - Use `Result` type for all functions that return a value
