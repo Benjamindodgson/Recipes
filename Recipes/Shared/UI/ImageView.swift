@@ -43,7 +43,7 @@ struct ImageView<Content>: View, Loggable where Content: View {
                 content(.empty)
             case .loading(let url):
                 AsyncImage(displayable: viewModel.displayable) { phase in
-                    renderImage(for: phase, url: url)
+                    renderImage(for: phase, url: url, model: model)
                 }
             case .loaded(let image):
                 content(.success(image))
@@ -55,15 +55,15 @@ struct ImageView<Content>: View, Loggable where Content: View {
         }
     }
     
-    private func renderImage(for phase: AsyncImagePhase, url: URL) -> some View {
+    private func renderImage(for phase: AsyncImagePhase, url: URL, model: ImageViewModel) -> some View {
         switch phase {
         case .empty:
             logger.debug("Starting image load for URL: \(url.absoluteString)")
         case .success(let image):
-            Task { [viewModel] in
+            Task {
                 logger.info("Image loaded successfully for URL: \(url.absoluteString)")
                 logger.debug("Caching image in memory")
-                await viewModel.cache(image: image, for: url)
+                await model.cache(image: image, for: url)
             }
         case .failure(let error):
             logger.error("Image load failed for URL: \(url.absoluteString), error: \(error.localizedDescription)")

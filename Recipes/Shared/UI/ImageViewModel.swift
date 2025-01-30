@@ -90,6 +90,7 @@ final class ImageViewModel: ViewModelable {
        - image: The `Image` to cache.
        - url: The `URL` associated with the Image.
      */
+    @MainActor
     func cache(image: Image, for url: URL) async {
         logger.debug("Caching image for URL: \(url.absoluteString)")
         await self.service.setValue(image, for: url)

@@ -9,9 +9,9 @@ import Foundation
 
 class MockURLProtocol: URLProtocol {
     
-    var mockData: Data?
-    var mockResponse: URLResponse?
-    var mockError: Error?
+    nonisolated(unsafe) static var mockData: Data?
+    nonisolated(unsafe) static var mockResponse: URLResponse?
+    nonisolated(unsafe) static var mockError: Error?
     
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -22,16 +22,16 @@ class MockURLProtocol: URLProtocol {
     }
     
     override func startLoading() {
-        if let error = self.mockError {
+        if let error = MockURLProtocol.mockError {
             client?.urlProtocol(self, didFailWithError: error)
             return
         }
         
-        if let data = self.mockData {
+        if let data = MockURLProtocol.mockData {
             client?.urlProtocol(self, didLoad: data)
         }
         
-        if let response = self.mockResponse {
+        if let response = MockURLProtocol.mockResponse {
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
         }
         

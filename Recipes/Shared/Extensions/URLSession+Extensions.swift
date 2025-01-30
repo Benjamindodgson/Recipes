@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension URLSession: Mockable {
-    static func mock() -> Self {
+extension URLSession {
+    static func mock() -> URLSession {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [MockURLProtocol.self]
-        return URLSession(configuration: configuration) as! Self
+        return URLSession(configuration: configuration)
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ImageCacheServiceTests {
     
-    @Test
+    @Test("Image Caching")
     func testImageCaching() async throws {
         // Given: A test image, URL, and service instance
         let service = ImageCacheService.mock()
@@ -30,7 +30,7 @@ struct ImageCacheServiceTests {
         #expect(cachedValue != nil, "Image should be stored in cache")
     }
     
-    @Test
+    @Test("Image Removal")
     func testImageRemoval() async throws {
         // Given: A test image, URL, and service instance
         let service = ImageCacheService.mock()
@@ -50,7 +50,7 @@ struct ImageCacheServiceTests {
         #expect(finalValue == nil, "Cache should be empty after removal")
     }
     
-    @Test
+    @Test("Image Overwrite")
     func testImageOverwrite() async throws {
         // Given: A test URL, images, and service instance
         let service = ImageCacheService.mock()
@@ -71,7 +71,7 @@ struct ImageCacheServiceTests {
         #expect(finalValue != nil, "New image should be stored in cache")
     }
     
-    @Test
+    @Test("Cache Reset")
     func testCacheReset() async throws {
         // Given: A service instance with some cached images
         let service = ImageCacheService.mock()
